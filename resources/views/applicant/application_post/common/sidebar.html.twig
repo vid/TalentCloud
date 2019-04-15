@@ -5,6 +5,14 @@
 
 ============================================================================= #}
 <div
+    id="skills-sidebar"
+    data-title={{ application_template.essential_sidebar_label|json_encode()|raw }}
+    data-nav-items={{ criteria.essential|json_encode|e('html_attr') }}
+    data-nav-item-title={{ application_template.sidebar_item_title|json_encode()|raw }}
+    class="application-post__subnav-wrapper box lg-1of4"
+>
+</div>
+{# <div
     class="application-post__subnav-wrapper box lg-1of4">
 
     <nav
@@ -52,4 +60,4 @@
 
     </nav>
 
-</div>
+</div> #}
