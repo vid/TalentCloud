@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 
 interface SkillsSidebarProps {
   title: string;
-  navItems: string;
+  navItems: object;
   navItemTitle: string;
 }
 
@@ -16,15 +16,19 @@ const SkillsSidebar: React.SFC<SkillsSidebarProps> = ({
     // <div className="application-post__subnav-wrapper box lg-1of4">
     <nav className="application-post__subnav-sticky-wrapper">
       <h4 className="application-post_subnav-label">{title}</h4>
-      {console.log(navItems)}
-      {/* {navItems.map(item => {
+      {Object.keys(navItems).map(item => {
+        const { skill } = navItems[item];
+        return (
           <a
             className="application-post__subnav-item"
-            href={"#skill" + item.name}
-            title={ navItemTitle }>
-            {{ item.name }}
+            href={`#skill${skill.name}`}
+            title={navItemTitle}
+            key={item}
+          >
+            {skill.name}
           </a>
-        })} */}
+        );
+      })}
     </nav>
     // </div>
   );
