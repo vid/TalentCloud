@@ -18,9 +18,7 @@ interface SkillProps {
   title: string;
 }
 
-interface SkillState {
-
-}
+interface SkillState {}
 
 class Skill extends React.Component<SkillProps, SkillState> {
   public constructor(props: SkillProps) {
@@ -28,19 +26,17 @@ class Skill extends React.Component<SkillProps, SkillState> {
   }
 
   public render(): React.ReactElement {
-    const {title} = this.props;
-    return (
-      <div>
-        {title}
-      </div>
-    )
-  };
-};
+    const { title } = this.props;
+    return <div>{title}</div>;
+  }
+}
 
-if(document.getElementById("skill-accordian-trigger")) {
-  const container = document.getElementById("skill-accordian-trigger") as HTMLElement;
-  if( container.hasAttribute("data-title")) {
-    const title = container.getAttribute("data-title") as string;
-    ReactDOM.render(<Skill title={title}/>)
+if (document.getElementById('skill-accordian-trigger')) {
+  const container = document.getElementById(
+    'skill-accordian-trigger',
+  ) as HTMLElement;
+  if (container.hasAttribute('data-title')) {
+    const title = container.getAttribute('data-title') as string;
+    ReactDOM.render(<Skill title={title} />);
   }
 }
