@@ -4,52 +4,26 @@
     Applicant: Application - Post: Sidebar
 
 ============================================================================= #}
-<div
-    class="application-post__subnav-wrapper box lg-1of4">
+{% if application_step == 3 %}
 
-    <nav
-        class="application-post__subnav-sticky-wrapper">
+    <div
+        id="skills-sidebar"
+        data-title="{{ application_template.essential_sidebar_label }}"
+        data-nav-items="{{ criteria.essential|json_encode() }}"
+        data-nav-item-title="{{ application_template.sidebar_item_title }}"
+        class="application-post__subnav-wrapper box lg-1of4"
+    >
+    </div>
 
-        {% if application_step == "3" %}
-            <h4
-                class="application-post_subnav-label">
-                {{ application_template.essential_sidebar_label }}
-            </h4>
-        {% elseif application_step == "4" %}
-            <h4
-                class="application-post_subnav-label">
-                {{ application_template.asset_sidebar_label }}
-            </h4>
-        {% endif %}
+{% elseif application_step == 4 %}
 
-            {% if application_step == "3" %}
+    <div
+        id="skills-sidebar"
+        data-title="{{ application_template.asset_sidebar_label }}"
+        data-nav-items="{{ criteria.asset|json_encode() }}"
+        data-nav-item-title="{{ application_template.sidebar_item_title }}"
+        class="application-post__subnav-wrapper box lg-1of4"
+    >
+    </div>
 
-                {% for criterion in criteria.essential %}
-
-                    <a
-                        class="application-post__subnav-item"
-                        href="#skill{{ criterion.skill.name }}"
-                        title="{{ application_template.sidebar_item_title }}">
-                        {{ criterion.skill.name }}
-                    </a>
-
-                {% endfor %}
-
-            {% elseif application_step == "4" %}
-
-                {% for criterion in criteria.asset %}
-
-                    <a
-                        class="application-post__subnav-item"
-                        href="#skill{{ criterion.skill.name }}"
-                        title="{{ application_template.sidebar_item_title }}">
-                        {{ criterion.skill.name }}
-                    </a>
-
-                {% endfor %}
-
-            {% endif %}
-
-    </nav>
-
-</div>
+{% endif %}
