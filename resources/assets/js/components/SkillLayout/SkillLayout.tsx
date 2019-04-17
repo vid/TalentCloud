@@ -1,36 +1,46 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import SkillLayoutHeader from './SkillLayoutHeader';
 
 interface SkillLayoutProps {
-  name: string;
-}
-
-interface SkillLayoutState {
+  applicationStep: string;
   title: string;
+  context: string;
+  skillsSectionTitle: string;
 }
 
-class SkillLayout extends React.Component<SkillLayoutProps, SkillLayoutState> {
-  public constructor(props: SkillLayoutProps) {
-    super(props);
-  }
+const SkillLayout: React.FunctionComponent<SkillLayoutProps> = ({
+  applicationStep,
+  title,
+  context,
+  skillsSectionTitle,
+}): React.ReactElement => {
+  return (
+    <section className="application-post__skills-layout">
+      <SkillLayoutHeader title={title} context={context} />
+    </section>
+  );
+};
 
-  public render(): React.ReactElement {
-    return (
-      <div>
-        <h1>Skill Layout</h1>
-      </div>
-    );
-  }
-}
+if (document.getElementById('skill-layout')) {
+  const container = document.getElementById('skill-layout') as HTMLElement;
+  if (container.hasAttribute('data-application-step')) {
+    const applicationStep = container.getAttribute(
+      'data-application-step',
+    ) as string;
+    const title = container.getAttribute('data-title') as string;
+    const context = container.getAttribute('data-context') as string;
+    const skillsSectionTitle = container.getAttribute(
+      'data-skills-section-title',
+    ) as string;
 
-if( document.getElementById("skill-layout")) {
-  const container = document.getElementById(
-    "skill-layout"
-  ) as HTMLElement;
-  if ( container.hasAttribute("data-name")) {
-    const name = container.getAttribute("data-name") as string;
     ReactDOM.render(
-      <SkillLayout name={name}/>,
+      <SkillLayout
+        applicationStep={applicationStep}
+        title={title}
+        context={context}
+        skillsSectionTitle={skillsSectionTitle}
+      />,
       container,
     );
   }

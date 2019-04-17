@@ -75,6 +75,17 @@
 
 #}
 <div
+    id="skill-accordian-trigger"
+    data-locale="{{ locale|json_encode() }}"
+    data-skill-declaration="{{ skill_declaration|json_encode() }}"
+    data-application-step="{{ application_step|json_encode() }}"
+    data-skill-type="{{ skillType|json_encode() }}"
+    data-criterion="{{ criterion|json_encode() }}"
+    data-skill-template="{{ skill_template|json_encode() }}"
+    data-relative-template="{{ relative_template|json_encode() }}"
+>
+</div>
+<div
     class="profile-element accordion skill ajax-form
         {% if locale == "profile" and skill_declaration == false %}template active{% endif %}
         {% if locale == "application" and application_step == "3" and criterion == false %}template{% endif %}

@@ -7,7 +7,8 @@
 //require('./components/JobPoster');
 //require('./components/Reference');
 //require('./components/ReferenceList');
-require("./components/ApplicationReview/ReviewApplicationsContainer");
-require("./components/ApplicationReview/ApplicationReviewContainer");
+require('./components/ApplicationReview/ReviewApplicationsContainer');
+require('./components/ApplicationReview/ApplicationReviewContainer');
+require('./components/SkillLayout/SkillLayout');
 
 //import ReviewApplications from './components/ReviewApplications';

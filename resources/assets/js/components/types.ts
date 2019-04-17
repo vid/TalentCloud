@@ -82,3 +82,7 @@ export interface ReviewStatus {
   id: ReviewStatusId;
   name: ReviewStatusName;
 }
+
+export interface Skill {
+
+}
