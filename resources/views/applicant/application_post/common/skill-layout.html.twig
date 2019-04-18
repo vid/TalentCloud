@@ -11,7 +11,10 @@
     data-application-step="{{ application_step }}"
     data-title="{{ application_template.essential_title }}"
     data-context="{{ application_template.essential_context }}"
-    data-skills-section-title={{ application_template.skills_section.essential_title}}>
+    data-skills-section-title="{{ application_template.skills_section.essential_title }}"
+    data-sibebar-label="{{ application_template.essential_sidebar_label }}"
+    data-nav-items="{{ criteria.essential|json_encode() }}"
+    data-nav-item-title="{{ application_template.sidebar_item_title }}">
 
 </div>
 {% elseif application_step == "4" %}
