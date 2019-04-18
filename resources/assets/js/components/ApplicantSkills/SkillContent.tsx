@@ -20,6 +20,8 @@ const SkillContent: React.FunctionComponent<SkillContentProps> = ({
           </div>
           <div className="box med-1of2">{/* empty */}</div>
         </div>
+        {/* Profile Element List */}
+        <div class="profile-element-list" />
       </div>
     </div>
   );
