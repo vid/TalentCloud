@@ -1,0 +1,57 @@
+{% extends "layouts/base" %}
+
+{% block title %}
+
+    {{ itp.page_title }}
+
+{% endblock %}
+
+{% block body %}
+
+    {# Sitewide Notice ====================================================== #}
+    {% include "common/alert" %}
+
+    {# Government of Canada Banner ========================================== #}
+    {% include "common/goc" %}
+
+    <div data-clone>
+        <div
+            data-c-background="white(100)">
+            <div style="background-image: url('/images/bg_crowd.jpg');" data-c-overlay="black(80)" data-c-padding="bottom(triple)">
+                <div data-c-margin="bottom(triple)">
+                    {% include "common/menu" %}
+                </div>
+                <div data-c-container="layout" data-c-alignment="centre">
+                    <span data-c-colour="white" data-c-margin="bottom(normal)">Thursday, November 3rd, 2018</span>
+                    <h2 data-c-colour="white" data-c-font-size="h2" data-c-font-weight="bold" data-c-margin="bottom(normal)">
+                        Sample Blog Title
+                    </h2>
+                    <span data-c-colour="white" data-c-margin="bottom(triple)">Authored by: Meagan Commonda</span>
+                    <nav aria-label="breadcrumb" data-c-breadcrumbs data-c-colour="white" data-c-margin="bottom(normal)">
+                        <ol>
+                            <li>
+                                <a href="#link-to-page" title="This is the title of the page link.">
+                                    Home
+                                </a>
+                                <i class="fa fa-caret-right"></i>
+                            </li>
+                            <li>
+                                <a href="#link-to-page" title="This is the title of the page link.">
+                                    Blog
+                                </a>
+                                <i class="fa fa-caret-right"></i>
+                            </li>
+                            <li>
+                                <a aria-current="page" href="#link-to-page" title="This is the title of the page link.">
+                                    Sample Blog Tit...
+                                </a>
+                                <i class="fa fa-caret-right"></i>
+                            </li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
