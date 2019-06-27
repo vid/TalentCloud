@@ -21,7 +21,8 @@ code-sniff:
 	./vendor/bin/phpcs -d memory_limit=512M -v --standard=PSR2 --extensions=php app/
 
 composer-install:
-	composer install -v --prefer-dist --no-dev --no-suggest --optimize-autoloader
+#	composer install -v --prefer-dist --no-dev --no-suggest --optimize-autoloader
+	composer install
 
 npm-install-no-bin-links:
 	npm install --no-bin-links

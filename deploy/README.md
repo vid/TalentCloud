@@ -36,16 +36,16 @@ The final .env file is copied to the app volume post initial install (no .setup)
 
 ## Testing
 ...Makefile
-    `composer install -v --prefer-dist --no-dev --no-suggest --optimize-autoloader`
+    `composer install`
 
 ... post-install.sh
     `make -f $OPROOT/Makefile env laravel-init fresh-db fake-data`
 
 ## Production
 
-It may be better to copy the .env file before the build starts.
+It may be better to copy the .env file before the container build starts.
 
 ...Makefile
-    `composer install`
+    `composer install -v --prefer-dist --no-dev --no-suggest --optimize-autoloader`
 
 
