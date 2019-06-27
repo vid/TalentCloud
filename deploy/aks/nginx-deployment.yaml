@@ -1,0 +1,47 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: nginx
+spec:
+  selector:
+    matchLabels:
+      app: talentcloud
+      tier: frontend
+      track: stable
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: talentcloud
+        tier: frontend
+        track: stable
+    spec:
+      containers:
+      - name: nginx
+        image: june10k8sacr.azurecr.io/nginx
+        ports:
+        - containerPort: 80
+        - containerPort: 443
+        resources: {}
+        volumeMounts:
+        - mountPath: /var/www
+          name: talentcloud
+        - mountPath: /opt/TalentCloud/ssl
+          name: ssl
+        - mountPath: /var/log
+          name: logs
+        workingDir: /var/www/
+      restartPolicy: Always
+      imagePullSecrets:
+        - name: aks-login
+      volumes:
+      - name: talentcloud
+        persistentVolumeClaim:
+          claimName: talentcloud
+      - name: ssl
+        persistentVolumeClaim:
+          claimName: ssl
+      - name: logs
+        persistentVolumeClaim:
+          claimName: logs
+status: {}

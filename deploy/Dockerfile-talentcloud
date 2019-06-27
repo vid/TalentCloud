@@ -1,0 +1,14 @@
+FROM php:7.2-fpm-alpine3.7
+RUN apk update && apk upgrade && \
+  apk add --no-cache \
+  postgresql-dev && \
+  docker-php-ext-install pgsql pdo_pgsql
+
+COPY service/wait-for-setup.sh /usr/local/bin/
+COPY etc/php/php.ini /etc/php/
+COPY etc/php-fpm.d/* /etc/php-fpm.d/
+
+COPY --chown=www-data:www-data --from=talentcloud-op:latest /opt/TalentCloud/var/www /var/www/
+
+USER www-data
+CMD ["/usr/local/bin/wait-for-setup.sh", "php-fpm"]

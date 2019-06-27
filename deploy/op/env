@@ -1,0 +1,4 @@
+APPROOT=/opt/TalentCloud
+OPROOT=$APPROOT/op
+WEBROOT=$APPROOT/var/www
+SETUP_FLAG=/var/log/.setup

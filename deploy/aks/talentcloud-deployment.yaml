@@ -1,0 +1,46 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: talentcloud
+spec:
+  selector:
+    matchLabels:
+      app: talentcloud
+      tier: backend
+      track: stable
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: talentcloud
+        tier: backend
+        track: stable
+    spec:
+      containers:
+      - name: talentcloud
+        image: june10k8sacr.azurecr.io/talentcloud
+        ports:
+        - containerPort: 9000
+        resources: {}
+        volumeMounts:
+        - mountPath: /var/log
+          name: logs
+        - mountPath: /var/www/
+          name: talentcloud
+        workingDir: /var/www/
+        env:
+        - name: DB_HOST
+          value: postgres
+        - name: DB_PORT
+          value: "5432"
+      restartPolicy: Always
+      imagePullSecrets:
+        - name: aks-login
+      volumes:
+      - name: logs
+        persistentVolumeClaim:
+          claimName: logs
+      - name: talentcloud
+        persistentVolumeClaim:
+          claimName: talentcloud
+status: {}

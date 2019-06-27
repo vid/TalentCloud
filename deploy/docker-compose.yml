@@ -1,0 +1,104 @@
+version: "2.1"
+# This is Docker-compose for development and staging. Its goals are to permit simple setup for a developer, where the only local tool required is docker-compose,
+# as well as supporting the same talentcloud application Dockerfile for development and production.
+
+services:
+    # talentcloud operations. Bootstraps the environment if required (no .setup file is present). Combines application logs into stderr and stout.
+    talentcloud-op:
+        build:
+            context: ..
+            dockerfile: deploy/Dockerfile
+        image: talentcloud-op
+        container_name: talentcloud-op
+        working_dir: /opt/TalentCloud/
+        restart: always
+        volumes:
+            - "ssl:/opt/TalentCloud/ssl"
+            - "logs:/var/log"
+            - "reports:/opt/TalentCloud/reports"
+            - "app:/opt/TalentCloud/app"
+#            - "WWWRoot:/opt/TalentCloud/var/www"
+        environment:
+            - "DB_PORT=5432"
+            - "DB_HOST=postgres"
+        depends_on:
+          postgres:
+           condition: service_healthy
+    # The TalentCloud application (PHP-FPM)
+    talentcloud:
+        # DEBUGGING without wait-for-setup, this container can just use the image
+        #        image: php:7.2-fpm-alpine3.7
+        build:
+            context: .
+            dockerfile: Dockerfile-talentcloud
+        image: talentcloud
+        working_dir: /var/www/
+        #        restart: always
+        volumes:
+            - "logs:/var/log"
+#            - "WWWRoot:/var/www/"
+        depends_on:
+            - talentcloud-op
+        environment:
+            - "DB_PORT=5432"
+            - "DB_HOST=postgres"
+        ports:
+            - "9000:9000"
+    # The web server (nginx)
+    nginx:
+        build:
+            context: .
+            dockerfile: Dockerfile-nginx
+        #        image: nginx:1.13.9-alpine
+        image: nginx
+        container_name: nginx-setup
+        working_dir: /var/www/
+        restart: always
+        volumes:
+            # needed for .setup signalling
+#            - "WWWRoot:/var/www"
+            - "ssl:/opt/TalentCloud/ssl"
+            - "logs:/var/log"
+        depends_on:
+            - talentcloud-op
+        ports:
+            - "80:80"
+            - "443:443"
+    # The database (Postgres)
+    postgres:
+    # Azure pipelines build requires a docker file in some cases for use in their repository.
+        build:
+            context: .
+            dockerfile: Dockerfile-postgres
+        image: postgres
+        container_name: postgres
+#        image: postgres:9.6-alpine
+        restart: always
+        volumes:
+            - "pgdata:/var/lib/postgresql/data"
+            - "logs:/var/log"
+        environment:
+            - "POSTGRES_DB=talentcloud"
+            - "POSTGRES_USER=talentcloud"
+            - "POSTGRES_PASSWORD=talentcloud"
+        ports:
+            - "5432-5434"
+        healthcheck:
+          test: ["CMD-SHELL", "pg_isready"]
+          retries: 5
+    # Adminer
+    adminer:
+        image: adminer
+        container_name: adminer
+        restart: always
+        depends_on:
+            - postgres
+        ports:
+            - "8060:8080"
+volumes:
+    pgdata:
+    logs:
+    reports:
+    ssl:
+    app:
+#    WWWRoot:

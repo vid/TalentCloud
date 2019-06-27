@@ -1,0 +1,51 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f ../docker-compose.yml
+    kompose.version: 1.18.0 (06a2e56)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: postgres
+  name: postgres
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: postgres
+    spec:
+      containers:
+      - name: postgres
+        image: june10k8sacr.azurecr.io/postgres
+        env:
+        - name: POSTGRES_DB
+          value: talentcloud
+        - name: POSTGRES_PASSWORD
+          value: talentcloud
+        - name: POSTGRES_USER
+          value: talentcloud
+        ports:
+        - containerPort: 5432
+        - containerPort: 5433
+        - containerPort: 5434
+        resources: {}
+        volumeMounts:
+        - mountPath: /var/lib/postgresql/
+          name: pgdata
+        - mountPath: /var/log
+          name: logs
+      restartPolicy: Always
+      imagePullSecrets:
+       - name: aks-login
+      volumes:
+      - name: pgdata
+        persistentVolumeClaim:
+          claimName: pgdata
+      - name: logs
+        persistentVolumeClaim:
+          claimName: logs
+status: {}
