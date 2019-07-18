@@ -67,38 +67,38 @@ export const getTempAssessments = createSelector(
  */
 export const getAssessmentsByCriterion = createCachedSelector(
   getCurrentAssessments,
-  (state: RootState, props: { criterionId: number }): number =>
+  (state: RootState, props: { criterionId: string }): string =>
     props.criterionId,
   (assessments, criterionId): Assessment[] =>
     assessments.filter(
       (assessment): boolean => assessment.criterion_id === criterionId,
     ),
-)((state, props): number => props.criterionId);
+)((state, props): string => props.criterionId);
 
 export const getCachedAssessmentsByCriterion = createCachedSelector(
   getAssessmentsByCriterion,
   (assessments): Assessment[] => assessments,
-)((state, props): number => props.criterionId, deepEqualSelectorOptions);
+)((state, props): string => props.criterionId, deepEqualSelectorOptions);
 
 export const getAssessmentIdsByCriterion = createCachedSelector(
   getAssessmentsByCriterion,
   (assessments): number[] => assessments.map(getId),
-)((state, props): number => props.criterionId);
+)((state, props): string => props.criterionId);
 
 export const getTempAssessmentsByCriterion = createCachedSelector(
   getTempAssessments,
-  (state: RootState, props: { criterionId: number }): number =>
+  (state: RootState, props: { criterionId: string }): string =>
     props.criterionId,
   (assessments, criterionId): TempAssessment[] =>
     assessments.filter(
       (assessment): boolean => assessment.criterion_id === criterionId,
     ),
-)((state, props): number => props.criterionId);
+)((state, props): string => props.criterionId);
 
 export const getTempAssessmentIdsByCriterion = createCachedSelector(
   getTempAssessmentsByCriterion,
   (assessments): number[] => assessments.map(getId),
-)((state, props): number => props.criterionId);
+)((state, props): string => props.criterionId);
 
 export const tempAssessmentIsSaving = (state: RootState, id: number): boolean =>
   hasKey(stateSlice(state).tempAssessmentSaving, id)
@@ -115,7 +115,7 @@ export const tempAssessmentsAreSavingByCriterion = createCachedSelector(
       (assessmentId): boolean =>
         hasKey(savingState, assessmentId) ? savingState[assessmentId] : false,
     ),
-)((state, props): number => props.criterionId);
+)((state, props): string => props.criterionId);
 
 /** Returns current (ie edited, if possible) verisons of assessment */
 export const getAssessmentById = createCachedSelector(
@@ -180,12 +180,12 @@ export const assessmentsAreEditedByCriteria = createCachedSelector(
       },
     );
   },
-)((state, props): number => props.criterionId);
+)((state, props): string => props.criterionId);
 
 export const getCachedAssessmentsAreEditedByCriteria = createCachedSelector(
   assessmentsAreEditedByCriteria,
   (map): { [id: number]: boolean } => map,
-)((state, props): number => props.criterionId, deepEqualSelectorOptions);
+)((state, props): string => props.criterionId, deepEqualSelectorOptions);
 
 export const assessmentIsUpdating = (state: RootState, id: number): boolean =>
   hasKey(stateSlice(state).assessmentUpdates, id)
@@ -204,9 +204,9 @@ export const assessmentsAreUpdatingByCriteria = createCachedSelector(
           ? updateState[assessmentId] > 0
           : false,
     ),
-)((state, props): number => props.criterionId);
+)((state, props): string => props.criterionId);
 
 export const getCachedAssessmentsAreUpdatingByCriteria = createCachedSelector(
   assessmentsAreUpdatingByCriteria,
   (map): { [id: number]: boolean } => map,
-)((state, props): number => props.criterionId, deepEqualSelectorOptions);
+)((state, props): string => props.criterionId, deepEqualSelectorOptions);

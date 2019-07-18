@@ -55,7 +55,7 @@ stories
       <CriteriaForm
         jobPosterId={1}
         criteria={{
-          ...fakeCriterion(1, 1),
+          ...fakeCriterion("temp-1", 1),
           skill_level_id: select(
             "Skill Level",
             skillLevelOptions,

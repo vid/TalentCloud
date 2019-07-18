@@ -134,9 +134,7 @@ const RatingGuideAnswer: React.FunctionComponent<
           onChange={(event): void =>
             updateAnswer({
               ...answer,
-              criterion_id: event.target.value
-                ? Number(event.target.value)
-                : null,
+              criterion_id: event.target.value || null,
             })
           }
           selected={answer.criterion_id}

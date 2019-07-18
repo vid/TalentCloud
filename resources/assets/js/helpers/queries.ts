@@ -2,7 +2,7 @@
  * Shortcut function that returns the id attribute of an object.
  * @param item
  */
-export function getId<T extends { id: number }>(item: T): number {
+export function getId<T extends string | number>(item: { id: T }): T {
   return item.id;
 }
 
@@ -24,11 +24,11 @@ export function notEmpty<T>(value: T | null | undefined): value is T {
  * @param objs
  * @param id
  */
-export function find<T extends { id: number }>(
+export function find<ID extends string | number, T extends { id: ID }>(
   objs: T[],
-  id: number,
+  id: ID,
 ): T | null {
-  const found = objs.filter(item => item.id === id);
+  const found = objs.filter((item): boolean => item.id === id);
   return found.length > 0 ? found[0] : null;
 }
 

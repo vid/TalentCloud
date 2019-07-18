@@ -8,7 +8,7 @@ export const parseRatingGuideAnswer = (
 ): RatingGuideAnswer => ({
   id: Number(data.id),
   rating_guide_question_id: Number(data.rating_guide_question_id),
-  criterion_id: data.criterion_id ? Number(data.criterion_id) : null,
+  criterion_id: data.criterion_id || null,
   expected_answer: data.expected_answer ? String(data.expected_answer) : null,
 });
 

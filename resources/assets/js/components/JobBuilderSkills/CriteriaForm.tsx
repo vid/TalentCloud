@@ -119,7 +119,7 @@ const updateCriteriaWithValues = (
 };
 
 const newCriteria = (jobPosterId: number, skillId: number): Criteria => ({
-  id: 0,
+  id: "temp", // FIXME: make this unique
   criteria_type_id: CriteriaTypeId.Essential,
   job_poster_id: jobPosterId,
   skill_id: skillId,

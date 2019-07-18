@@ -7,8 +7,8 @@ import { getCriteriaIdsOfTypeByJob } from "../../store/Job/jobSelector";
 import { CriteriaTypeId } from "../../models/lookupConstants";
 
 interface AssessmentPlanBuilderProps {
-  essentialCriteriaIds: number[];
-  assetCriteriaIds: number[];
+  essentialCriteriaIds: string[];
+  assetCriteriaIds: string[];
 }
 
 export const AssessmentPlanBuilder: React.FunctionComponent<
@@ -120,8 +120,8 @@ const mapStateToProps = (
   state: RootState,
   { jobId }: AssessmentPlanBuilderContainerProps,
 ): {
-  essentialCriteriaIds: number[];
-  assetCriteriaIds: number[];
+  essentialCriteriaIds: string[];
+  assetCriteriaIds: string[];
 } => {
   return {
     essentialCriteriaIds: getCriteriaIdsOfTypeByJob(state, {

@@ -59,7 +59,7 @@ export const getCriteria = createSelector(
 
 export const getCriteriaById = (
   state: RootState,
-  { criterionId }: { criterionId: number },
+  { criterionId }: { criterionId: string },
 ): Criteria | null =>
   hasKey(entities(state).criteria.byId, criterionId)
     ? entities(state).criteria.byId[criterionId]
@@ -88,10 +88,10 @@ export const getCriteriaOfTypeByJob = createCachedSelector(
 
 export const getCriteriaIdsOfTypeByJob = createCachedSelector(
   getCriteriaOfTypeByJob,
-  (criteria): number[] => criteria.map(getId),
+  (criteria): string[] => criteria.map(getId),
 )((state, props): string => `${props.jobId}:${props.criteriaTypeId}`);
 
 export const getCriteriaIdsByJob = createCachedSelector(
   getCriteriaByJob,
-  (criteria): number[] => criteria.map(getId),
+  (criteria): string[] => criteria.map(getId),
 )((state, ownProps): number => ownProps.jobId);

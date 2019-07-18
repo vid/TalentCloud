@@ -38,11 +38,11 @@ export const RatingGuideNarrativeAssessment: React.FunctionComponent<
   if (jobId === null) {
     return null;
   }
-  const getCriteriaSkillType = (criterionId: number): number => {
+  const getCriteriaSkillType = (criterionId: string): number => {
     const skill = criteriaToSkill[criterionId];
     return skill ? skill.skill_type_id : SkillTypeId.Hard; // return hard type by default
   };
-  const getCriteriaSkillName = (criterionId: number): string => {
+  const getCriteriaSkillName = (criterionId: string): string => {
     const skill = criteriaToSkill[criterionId];
     return skill ? skill[intl.locale].name : "";
   };

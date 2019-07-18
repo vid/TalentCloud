@@ -25,7 +25,7 @@ export interface EntityState {
   };
   criteria: {
     byId: {
-      [id: number]: Criteria;
+      [id: string]: Criteria;
     };
   };
   jobEdits: {
@@ -38,7 +38,7 @@ export interface UiState {
     [id: number]: boolean;
   };
   criteriaUpdating: {
-    [id: number]: boolean;
+    [id: string]: boolean;
   };
   creatingJob: boolean;
   selectedJobId: number | null;

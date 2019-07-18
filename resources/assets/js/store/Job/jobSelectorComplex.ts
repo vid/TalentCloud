@@ -48,9 +48,9 @@ import { deepEqualSelectorOptions } from "../cachedSelectors";
 export const getCriteriaIdsByJobAndAssessmentType = createCachedSelector(
   getCriteriaIdsByJob,
   getAssessmentsByType,
-  (jobCriteriaIds, assessments): number[] => {
+  (jobCriteriaIds, assessments): string[] => {
     const assessmentCriteriaIds = assessments.map(
-      (assessment): number => assessment.criterion_id,
+      (assessment): string => assessment.criterion_id,
     );
     return intersection(jobCriteriaIds, assessmentCriteriaIds);
   },
@@ -59,11 +59,10 @@ export const getCriteriaIdsByJobAndAssessmentType = createCachedSelector(
 export const getCriteriaByJobAndAssessmentType = createCachedSelector(
   getCriteriaIdsByJobAndAssessmentType,
   getCriteriaState,
-  (criteriaIds: number[], criteriaState): Criteria[] =>
+  (criteriaIds: string[], criteriaState): Criteria[] =>
     criteriaIds
-      .map(
-        (id: number): Criteria | null =>
-          hasKey(criteriaState, id) ? criteriaState[id] : null,
+      .map((id: string): Criteria | null =>
+        hasKey(criteriaState, id) ? criteriaState[id] : null,
       )
       .filter(notEmpty),
 )(
@@ -80,10 +79,10 @@ export const getCriteriaByJobAndAssessmentType = createCachedSelector(
 export const getCriteriaIdsUnansweredForAssessmentType = createCachedSelector(
   getCriteriaIdsByJobAndAssessmentType,
   getRatingGuideAnswersByAssessment,
-  (requiredCriteriaIds, assessmentAnswers): number[] => {
-    const answeredCriteriaIds: number[] = uniq(
+  (requiredCriteriaIds: string[], assessmentAnswers): string[] => {
+    const answeredCriteriaIds: string[] = uniq(
       assessmentAnswers
-        .map((answer: RatingGuideAnswer): number | null => answer.criterion_id)
+        .map((answer: RatingGuideAnswer): string | null => answer.criterion_id)
         .filter(notEmpty),
     );
     return difference(requiredCriteriaIds, answeredCriteriaIds);
@@ -141,11 +140,10 @@ export const getCriteriaUnansweredForQuestion = createCachedSelector(
 
     // All the criteria this question may test -
     const assessmentCriteria: Criteria[] = questionTypeAssessments
-      .map(
-        (assessment): Criteria | null =>
-          hasKey(criteriaState, assessment.criterion_id)
-            ? criteriaState[assessment.criterion_id]
-            : null,
+      .map((assessment): Criteria | null =>
+        hasKey(criteriaState, assessment.criterion_id)
+          ? criteriaState[assessment.criterion_id]
+          : null,
       )
       .filter(notEmpty)
       .filter(
@@ -164,8 +162,8 @@ export const getCriteriaUnansweredForQuestion = createCachedSelector(
     const questionAnswers = questionCurrentAnswers.concat(questionTempAnswers);
 
     // The criteria already selected by an answer
-    const selectedCriteriaIds: number[] = questionAnswers
-      .map((a): number | null => a.criterion_id)
+    const selectedCriteriaIds: string[] = questionAnswers
+      .map((a): string | null => a.criterion_id)
       .filter(notEmpty);
 
     // Filter out already selected answers
@@ -186,11 +184,10 @@ export const getCachedCriteriaUnansweredForQuestion = createCachedSelector(
 export const getCriteriaUnansweredForAssessmentType = createCachedSelector(
   getCriteriaIdsUnansweredForAssessmentType,
   getCriteriaState,
-  (criteriaIds: number[], criteriaState): Criteria[] =>
+  (criteriaIds: string[], criteriaState): Criteria[] =>
     criteriaIds
-      .map(
-        (id: number): Criteria | null =>
-          hasKey(criteriaState, id) ? criteriaState[id] : null,
+      .map((id: string): Criteria | null =>
+        hasKey(criteriaState, id) ? criteriaState[id] : null,
       )
       .filter(notEmpty),
 )(
@@ -202,12 +199,9 @@ export const getCriteriaToSkills = createSelector(
   getSkillState,
   getCriteria,
   (skillState, criteria): { [criteriaId: number]: Skill | null } =>
-    mapToObjectTrans(
-      criteria,
-      getId,
-      (criterion): Skill | null =>
-        hasKey(skillState, criterion.skill_id)
-          ? skillState[criterion.skill_id]
-          : null,
+    mapToObjectTrans(criteria, getId, (criterion): Skill | null =>
+      hasKey(skillState, criterion.skill_id)
+        ? skillState[criterion.skill_id]
+        : null,
     ),
 );

@@ -5,7 +5,7 @@ import { Assessment } from "../models/types";
 
 export const parseAssessment = (data: ResponseData): Assessment => ({
   id: Number(data.id),
-  criterion_id: Number(data.criterion_id),
+  criterion_id: data.criterion_id,
   assessment_type_id: Number(data.assessment_type_id),
 });
 

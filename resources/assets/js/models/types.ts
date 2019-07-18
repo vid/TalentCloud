@@ -135,7 +135,7 @@ export interface Skill {
 }
 
 export interface Criteria {
-  id: number;
+  id: string;
   criteria_type_id: number; // asset or essential
   job_poster_id: number;
   skill_id: number;
@@ -150,21 +150,21 @@ export interface Criteria {
 
 export interface Assessment {
   id: number;
-  criterion_id: number;
+  criterion_id: string;
   assessment_type_id: number;
 }
 
 // Version of Assessment that hasn't been saved to server yet
 export interface TempAssessment {
   id: number;
-  criterion_id: number;
+  criterion_id: string;
   assessment_type_id: number | null;
 }
 
 export interface RatingGuideAnswer {
   id: number;
   rating_guide_question_id: number;
-  criterion_id: number | null;
+  criterion_id: string | null;
   expected_answer: string | null;
 }
 
@@ -179,7 +179,7 @@ export interface AssessmentPlanNotification {
   id: number;
   job_poster_id: number;
   type: string;
-  criteria_id: number;
+  criteria_id: string;
   criteria_type_id: number;
   skill_id: number;
   skill_id_new: number | null;

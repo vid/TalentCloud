@@ -35,7 +35,7 @@ export type CreateTempRatingGuideAnswerAction = Action<
   typeof CREATE_TEMP_RATING_GUIDE_ANSWER,
   {
     ratingGuideQuestionId: number;
-    criterionId: number | null;
+    criterionId: string | null;
     expectedAnswer: string | null;
   }
 >;
@@ -52,7 +52,7 @@ export type DeleteTempRatingGuideAnswerAction = Action<
 
 export const createTempRatingGuideAnswer = (
   ratingGuideQuestionId: number,
-  criterionId: number | null,
+  criterionId: string | null,
   expectedAnswer: string | null,
 ): CreateTempRatingGuideAnswerAction => ({
   type: CREATE_TEMP_RATING_GUIDE_ANSWER,
@@ -136,16 +136,12 @@ export const updateRatingGuideAnswer = (
   ): void => {
     dispatch(updateRatingGuideAnswerStarted(ratingGuideAnswer));
     updateRatingGuideAnswerApi(ratingGuideAnswer)
-      .then(
-        (updatedRatingGuideAnswer): void => {
-          dispatch(updateRatingGuideAnswerSucceeded(updatedRatingGuideAnswer));
-        },
-      )
-      .catch(
-        (error: Error): void => {
-          dispatch(updateRatingGuideAnswerFailed(ratingGuideAnswer, error));
-        },
-      );
+      .then((updatedRatingGuideAnswer): void => {
+        dispatch(updateRatingGuideAnswerSucceeded(updatedRatingGuideAnswer));
+      })
+      .catch((error: Error): void => {
+        dispatch(updateRatingGuideAnswerFailed(ratingGuideAnswer, error));
+      });
   };
 };
 
@@ -208,16 +204,12 @@ export const deleteRatingGuideAnswer = (
   ): void => {
     dispatch(deleteRatingGuideAnswerStarted(id));
     deleteRatingGuideAnswerApi(id)
-      .then(
-        (): void => {
-          dispatch(deleteRatingGuideAnswerSucceeded(id));
-        },
-      )
-      .catch(
-        (error: Error): void => {
-          dispatch(deleteRatingGuideAnswerFailed(id, error));
-        },
-      );
+      .then((): void => {
+        dispatch(deleteRatingGuideAnswerSucceeded(id));
+      })
+      .catch((error: Error): void => {
+        dispatch(deleteRatingGuideAnswerFailed(id, error));
+      });
   };
 };
 
@@ -289,21 +281,17 @@ export const storeNewRatingGuideAnswer = (
 
     dispatch(storeNewRatingGuideAnswerStarted(ratingGuideAnswer));
     createRatingGuideAnswerApi(ratingGuideAnswer)
-      .then(
-        (updatedRatingGuideAnswer): void => {
-          dispatch(
-            storeNewRatingGuideAnswerSucceeded(
-              updatedRatingGuideAnswer,
-              ratingGuideAnswer,
-            ),
-          );
-        },
-      )
-      .catch(
-        (error: Error): void => {
-          dispatch(storeNewRatingGuideAnswerFailed(ratingGuideAnswer, error));
-        },
-      );
+      .then((updatedRatingGuideAnswer): void => {
+        dispatch(
+          storeNewRatingGuideAnswerSucceeded(
+            updatedRatingGuideAnswer,
+            ratingGuideAnswer,
+          ),
+        );
+      })
+      .catch((error: Error): void => {
+        dispatch(storeNewRatingGuideAnswerFailed(ratingGuideAnswer, error));
+      });
   };
 };
 

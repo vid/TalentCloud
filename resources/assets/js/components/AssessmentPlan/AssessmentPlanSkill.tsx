@@ -310,7 +310,7 @@ export const AssessmentPlanSkill: React.FunctionComponent<
 };
 
 interface AssessmentPlanSkillContainerProps {
-  criterionId: number;
+  criterionId: string;
 }
 
 const mapStateToProps = (
