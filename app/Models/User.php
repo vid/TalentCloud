@@ -25,6 +25,8 @@ use App\CRUD\TalentCloudCrudTrait as CrudTrait;
  * @property int $id
  * @property string $email
  * @property string $name
+ * @property string $first_name
+ * @property string $last_name
  * @property string $password
  * @property boolean $is_confirmed
  * @property boolean $is_priority
