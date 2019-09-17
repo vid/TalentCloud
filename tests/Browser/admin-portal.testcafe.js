@@ -1,4 +1,3 @@
-import { Selector } from "testcafe";
 import { adminUser } from "./helpers/roles";
 import AdminPage from "./helpers/pageModels/admin.pageModel";
 
@@ -7,7 +6,7 @@ test("Login as Admin #critical", async t => {
   await t
     // Login as Admin.
     .useRole(adminUser)
-    // Go to Job Poster Builder.
+    // Go to admin dashboard.
     .navigateTo("/admin")
     .expect(AdminPage.dashboardTitle.visible)
     .ok();
@@ -15,14 +14,25 @@ test("Login as Admin #critical", async t => {
 
 fixture(`Admin Portal Interface #admin`).page(`talent.test/admin`);
 
-test("Login as Admin #critical #focus", async t => {
+test("Navigate to users tab #critical #focus", async t => {
   await t
     // Login as Admin.
     .useRole(adminUser)
-    // Go to Job Poster Builder.
+    // Go to admin dashboard.
     .navigateTo("/admin")
     .click(AdminPage.usersTab)
     .expect(AdminPage.usersTitle)
+    .ok();
+});
+
+test("Navigate to edit user #critical #focus", async t => {
+  await t
+    // Login as Admin.
+    .useRole(adminUser)
+    // Go to admin dashboard.
+    .navigateTo("/admin/user")
+    .click(AdminPage.firstUserEditButton)
+    .expect(AdminPage.editUserTitle)
     .ok();
 });
 
