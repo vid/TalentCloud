@@ -93,7 +93,7 @@ export const updateAssessment = (
 > =>
   asyncPut(
     assessmentEndpoint(assessment.id),
-    { assessment },
+    assessment,
     UPDATE_ASSESSMENT_STARTED,
     UPDATE_ASSESSMENT_SUCCEEDED,
     UPDATE_ASSESSMENT_FAILED,
@@ -158,7 +158,7 @@ export const createAssessment = (
 > =>
   asyncPost(
     assessmentEndpoint(),
-    { assessment },
+    assessment,
     STORE_NEW_ASSESSMENT_STARTED,
     STORE_NEW_ASSESSMENT_SUCCEEDED,
     STORE_NEW_ASSESSMENT_FAILED,

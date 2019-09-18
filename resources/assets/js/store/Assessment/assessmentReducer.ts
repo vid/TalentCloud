@@ -69,7 +69,7 @@ export const initState = (): AssessmentState => ({
  * This is useful for not deleting a temp state when the first of several queued async updates completes.
  *
  */
-const deleteEditedIfIdentical = (
+export const deleteEditedIfIdentical = (
   editedAssessments: { [id: number]: Assessment },
   assessment: Assessment,
 ): { [id: number]: Assessment } => {
@@ -179,7 +179,7 @@ export const assessmentReducer = (
         ),
         assessmentUpdates: decrementUpdates(
           state.assessmentUpdates,
-          action.payload.id,
+          action.meta.id,
         ),
       };
     case UPDATE_ASSESSMENT_FAILED:

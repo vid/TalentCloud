@@ -101,4 +101,16 @@ class JobPolicy extends BasePolicy
             $jobPoster->manager->user->id == $user->id &&
             $jobPoster->isClosed();
     }
+    /**
+     * Determine whether the user can edit the AssessmentPlan for this job poster.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\JobPoster  $jobPoster
+     * @return mixed
+     */
+    public function updateAssessmentPlan(User $user, JobPoster $jobPoster)
+    {
+        // For now, this permission can be same as editing the job poster itself
+        return $this->update($user, $jobPoster);
+    }
 }

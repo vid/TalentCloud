@@ -427,7 +427,7 @@ Route::group(['prefix' => 'api'], function (): void {
     Route::get('departments', 'Api\DepartmentController@index');
 
     // Resource Routes are protected by policies in controllers instead of middleware.
-    Route::resource('assessments', 'AssessmentController')->except([
+    Route::resource('assessments', 'Api\AssessmentController')->except([
         'create', 'edit', 'index'
     ]);
     Route::apiResource('rating-guide-answers', 'RatingGuideAnswerController')->except([
