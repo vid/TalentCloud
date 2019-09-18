@@ -1,13 +1,17 @@
-import { ThunkAction, ThunkDispatch } from "redux-thunk";
-import { AnyAction } from "redux";
 import { Action } from "../createAction";
 import {
-  updateAssessment as updateAssessmentApi,
-  createAssessment as createAssessmentApi,
-  deleteAssessment as deleteAssessmentApi,
+  assessmentEndpoint,
+  parseAssessment,
 } from "../../api/assessment";
 import { Assessment, TempAssessment } from "../../models/types";
-import { FailedAction } from "../asyncAction";
+import {
+  FailedAction,
+  AsyncFsaActions,
+  RSAActionTemplate,
+  asyncPut,
+  asyncPost,
+  asyncDelete,
+} from "../asyncAction";
 
 /** Action for editing Assessments (without saving to server) */
 export const EDIT_ASSESSMENT = "EDIT_ASSESSMENT";
@@ -70,66 +74,32 @@ export const UPDATE_ASSESSMENT_STARTED = "UPDATE_ASSESSMENT_STARTED";
 export const UPDATE_ASSESSMENT_SUCCEEDED = "UPDATE_ASSESSMENT_SUCCEEDED";
 export const UPDATE_ASSESSMENT_FAILED = "UPDATE_ASSESSMENT_FAILED";
 
-export type UpdateAssessmentStartedAction = Action<
+export type UpdateAssessmentAction = AsyncFsaActions<
   typeof UPDATE_ASSESSMENT_STARTED,
-  { assessment: Assessment }
->;
-export type UpdateAssessmentSucceededAction = Action<
   typeof UPDATE_ASSESSMENT_SUCCEEDED,
-  { assessment: Assessment }
->;
-export type UpdateAssessmentFailedAction = FailedAction<
   typeof UPDATE_ASSESSMENT_FAILED,
-  Assessment
+  Assessment,
+  { id: number; update: Assessment }
 >;
 
-export const updateAssessmentStarted = (
-  assessment: Assessment,
-): UpdateAssessmentStartedAction => {
-  return {
-    type: UPDATE_ASSESSMENT_STARTED,
-    payload: {
-      assessment,
-    },
-  };
-};
-export const updateAssessmentSucceeded = (
-  assessment: Assessment,
-): UpdateAssessmentSucceededAction => {
-  return {
-    type: UPDATE_ASSESSMENT_SUCCEEDED,
-    payload: {
-      assessment,
-    },
-  };
-};
-export const updateAssessmentFailed = (
-  assessment: Assessment,
-  error: Error,
-): UpdateAssessmentFailedAction => ({
-  type: UPDATE_ASSESSMENT_FAILED,
-  payload: error,
-  meta: assessment,
-  error: true,
-});
 export const updateAssessment = (
   assessment: Assessment,
-): ThunkAction<void, any, any, AssessmentAction> => {
-  return (dispatch: ThunkDispatch<any, undefined, AssessmentAction>): void => {
-    dispatch(updateAssessmentStarted(assessment));
-    updateAssessmentApi(assessment)
-      .then(
-        (updatedAssessment): void => {
-          dispatch(updateAssessmentSucceeded(updatedAssessment));
-        },
-      )
-      .catch(
-        (error: Error): void => {
-          dispatch(updateAssessmentFailed(assessment, error));
-        },
-      );
-  };
-};
+): RSAActionTemplate<
+  typeof UPDATE_ASSESSMENT_STARTED,
+  typeof UPDATE_ASSESSMENT_SUCCEEDED,
+  typeof UPDATE_ASSESSMENT_FAILED,
+  Assessment,
+  { id: number; update: Assessment }
+> =>
+  asyncPut(
+    assessmentEndpoint(assessment.id),
+    { assessment },
+    UPDATE_ASSESSMENT_STARTED,
+    UPDATE_ASSESSMENT_SUCCEEDED,
+    UPDATE_ASSESSMENT_FAILED,
+    parseAssessment,
+    { id: assessment.id, update: assessment },
+  );
 
 /** Deleting Assessments on server */
 
@@ -137,146 +107,70 @@ export const DELETE_ASSESSMENT_STARTED = "DELETE_ASSESSMENT_STARTED";
 export const DELETE_ASSESSMENT_SUCCEEDED = "DELETE_ASSESSMENT_SUCCEEDED";
 export const DELETE_ASSESSMENT_FAILED = "DELETE_ASSESSMENT_FAILED";
 
-export type DeleteAssessmentStartedAction = Action<
+export type DeleteAssessmentAction = AsyncFsaActions<
   typeof DELETE_ASSESSMENT_STARTED,
-  { id: number }
->;
-export type DeleteAssessmentSucceededAction = Action<
   typeof DELETE_ASSESSMENT_SUCCEEDED,
-  { id: number }
->;
-export type DeleteAssessmentFailedAction = FailedAction<
   typeof DELETE_ASSESSMENT_FAILED,
+  {},
   { id: number }
 >;
 
-export const deleteAssessmentStarted = (
-  id: number,
-): DeleteAssessmentStartedAction => {
-  return {
-    type: DELETE_ASSESSMENT_STARTED,
-    payload: {
-      id,
-    },
-  };
-};
-export const deleteAssessmentSucceeded = (
-  id: number,
-): DeleteAssessmentSucceededAction => {
-  return {
-    type: DELETE_ASSESSMENT_SUCCEEDED,
-    payload: {
-      id,
-    },
-  };
-};
-export const deleteAssessmentFailed = (
-  id: number,
-  error: Error,
-): DeleteAssessmentFailedAction => ({
-  type: DELETE_ASSESSMENT_FAILED,
-  payload: error,
-  meta: { id },
-  error: true,
-});
 export const deleteAssessment = (
   id: number,
-): ThunkAction<void, any, any, AssessmentAction> => {
-  return (dispatch: ThunkDispatch<any, undefined, AssessmentAction>): void => {
-    dispatch(deleteAssessmentStarted(id));
-    deleteAssessmentApi(id)
-      .then(
-        (): void => {
-          dispatch(deleteAssessmentSucceeded(id));
-        },
-      )
-      .catch(
-        (error: Error): void => {
-          dispatch(deleteAssessmentFailed(id, error));
-        },
-      );
-  };
-};
+): RSAActionTemplate<
+  typeof DELETE_ASSESSMENT_STARTED,
+  typeof DELETE_ASSESSMENT_SUCCEEDED,
+  typeof DELETE_ASSESSMENT_FAILED,
+  {},
+  { id: number }
+> =>
+  asyncDelete(
+    assessmentEndpoint(id),
+    DELETE_ASSESSMENT_STARTED,
+    DELETE_ASSESSMENT_SUCCEEDED,
+    DELETE_ASSESSMENT_FAILED,
+    () => ({}),
+    { id },
+  );
+
 
 /** Actions for saving a NEW assessment to server */
 export const STORE_NEW_ASSESSMENT_STARTED = "STORE_ASSESSMENT_STARTED";
 export const STORE_NEW_ASSESSMENT_SUCCEEDED = "STORE_ASSESSMENT_SUCCEEDED";
 export const STORE_NEW_ASSESSMENT_FAILED = "STORE_ASSESSMENT_FAILED";
 
-export type StoreNewAssessmentStartedAction = Action<
+export type CreateAssessmentAction = AsyncFsaActions<
   typeof STORE_NEW_ASSESSMENT_STARTED,
-  { assessment: Assessment }
->;
-export type StoreNewAssessmentSucceededAction = Action<
   typeof STORE_NEW_ASSESSMENT_SUCCEEDED,
-  { assessment: Assessment; oldAssessment: Assessment }
->;
-export type StoreNewAssessmentFailedAction = FailedAction<
   typeof STORE_NEW_ASSESSMENT_FAILED,
-  Assessment
+  Assessment,
+  { tempId: number; tempAssessment: Assessment }
 >;
 
-export const storeNewAssessmentStarted = (
+export const createAssessment = (
   assessment: Assessment,
-): StoreNewAssessmentStartedAction => {
-  return {
-    type: STORE_NEW_ASSESSMENT_STARTED,
-    payload: {
-      assessment,
-    },
-  };
-};
-export const storeNewAssessmentSucceeded = (
-  assessment: Assessment,
-  oldAssessment: Assessment,
-): StoreNewAssessmentSucceededAction => {
-  return {
-    type: STORE_NEW_ASSESSMENT_SUCCEEDED,
-    payload: {
-      assessment,
-      oldAssessment,
-    },
-  };
-};
-export const storeNewAssessmentFailed = (
-  oldAssessment: Assessment,
-  error: Error,
-): StoreNewAssessmentFailedAction => ({
-  type: STORE_NEW_ASSESSMENT_FAILED,
-  payload: error,
-  meta: oldAssessment,
-  error: true,
-});
-export const storeNewAssessment = (
-  assessment: Assessment,
-): ThunkAction<void, {}, {}, AnyAction> => {
-  return (dispatch: ThunkDispatch<{}, {}, AnyAction>): void => {
-    dispatch(storeNewAssessmentStarted(assessment));
-    createAssessmentApi(assessment)
-      .then(
-        (updatedAssessment): void => {
-          dispatch(storeNewAssessmentSucceeded(updatedAssessment, assessment));
-        },
-      )
-      .catch(
-        (error: Error): void => {
-          dispatch(storeNewAssessmentFailed(assessment, error));
-        },
-      );
-  };
-};
+): RSAActionTemplate<
+  typeof STORE_NEW_ASSESSMENT_STARTED,
+  typeof STORE_NEW_ASSESSMENT_SUCCEEDED,
+  typeof STORE_NEW_ASSESSMENT_FAILED,
+  Assessment,
+  { tempId: number; tempAssessment: Assessment }
+> =>
+  asyncPost(
+    assessmentEndpoint(),
+    { assessment },
+    STORE_NEW_ASSESSMENT_STARTED,
+    STORE_NEW_ASSESSMENT_SUCCEEDED,
+    STORE_NEW_ASSESSMENT_FAILED,
+    parseAssessment,
+    { tempId: assessment.id, tempAssessment: assessment },
+  );
 
 export type AssessmentAction =
   | EditAssessmentAction
-  | UpdateAssessmentStartedAction
-  | UpdateAssessmentSucceededAction
-  | UpdateAssessmentFailedAction
-  | DeleteAssessmentStartedAction
-  | DeleteAssessmentSucceededAction
-  | DeleteAssessmentFailedAction
+  | UpdateAssessmentAction
+  | DeleteAssessmentAction
   | CreateTempAssessmentAction
   | EditTempAssessmentAction
   | DeleteTempAssessmentAction
-  | StoreNewAssessmentStartedAction
-  | StoreNewAssessmentSucceededAction
-  | StoreNewAssessmentFailedAction;
+  | CreateAssessmentAction;

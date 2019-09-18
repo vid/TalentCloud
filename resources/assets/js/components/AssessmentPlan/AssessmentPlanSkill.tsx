@@ -34,7 +34,7 @@ import {
   editTempAssessment as editTempAssessmentAction,
   deleteTempAssessment as deleteTempAssessmentAction,
   createTempAssessment,
-  storeNewAssessment,
+  createAssessment as storeNewAssessment,
   deleteAssessment,
 } from "../../store/Assessment/assessmentActions";
 import { getCriteriaById } from "../../store/Job/jobSelector";
@@ -358,8 +358,9 @@ const mapDispatchToProps = (
   editAssessment: (assessment: Assessment): void => {
     dispatch(editAssessmentAction(assessment));
   },
-  updateAssessment: (assessment: Assessment): void =>
-    dispatch(updateAssessmentAction(assessment)),
+  updateAssessment: (assessment: Assessment): void => {
+    dispatch(updateAssessmentAction(assessment));
+  },
   removeAssessment: (assessmentId: number): void => {
     dispatch(deleteAssessment(assessmentId));
   },

@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import axios from "axios";
-import { ResponseData, baseUrl, ApiResponse } from "./base";
+import { ResponseData, baseUrl } from "./base";
 import { Assessment } from "../models/types";
 
 export const parseAssessment = (data: ResponseData): Assessment => ({
@@ -9,28 +8,5 @@ export const parseAssessment = (data: ResponseData): Assessment => ({
   assessment_type_id: Number(data.assessment_type_id),
 });
 
-export const updateAssessment = (
-  assessment: Assessment,
-): Promise<Assessment> => {
-  return axios
-    .put(`${baseUrl()}/assessments/${assessment.id}`, assessment)
-    .then(
-      (response: ApiResponse): Assessment =>
-        parseAssessment(response.data.assessment),
-    );
-};
-
-export const createAssessment = (
-  assessment: Assessment,
-): Promise<Assessment> => {
-  return axios
-    .post(`${baseUrl()}/assessments`, assessment)
-    .then(
-      (response: ApiResponse): Assessment =>
-        parseAssessment(response.data.assessment),
-    );
-};
-
-export const deleteAssessment = async (id: number): Promise<void> => {
-  await axios.delete(`${baseUrl()}/assessments/${id}`);
-};
+export const assessmentEndpoint = (id?: number): string =>
+  id ? `${baseUrl()}/assessments/${id}` : `${baseUrl()}/assessments`;

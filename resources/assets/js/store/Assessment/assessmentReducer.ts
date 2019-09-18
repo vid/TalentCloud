@@ -163,7 +163,7 @@ export const assessmentReducer = (
         ...state,
         assessmentUpdates: incrementUpdates(
           state.assessmentUpdates,
-          action.payload.assessment.id,
+          action.meta.id,
         ),
       };
     case UPDATE_ASSESSMENT_SUCCEEDED:
@@ -171,15 +171,15 @@ export const assessmentReducer = (
         ...state,
         assessments: {
           ...state.assessments,
-          [action.payload.assessment.id]: action.payload.assessment,
+          [action.payload.id]: action.payload,
         },
         editedAssessments: deleteEditedIfIdentical(
           state.editedAssessments,
-          action.payload.assessment,
+          action.payload,
         ),
         assessmentUpdates: decrementUpdates(
           state.assessmentUpdates,
-          action.payload.assessment.id,
+          action.payload.id,
         ),
       };
     case UPDATE_ASSESSMENT_FAILED:
@@ -189,7 +189,7 @@ export const assessmentReducer = (
         ...state,
         editedAssessments: deleteEditedIfIdentical(
           state.editedAssessments,
-          action.meta,
+          action.meta.update,
         ),
         assessmentUpdates: decrementUpdates(
           state.assessmentUpdates,
@@ -201,7 +201,7 @@ export const assessmentReducer = (
         ...state,
         assessmentDeletes: incrementUpdates(
           state.assessmentDeletes,
-          action.payload.id,
+          action.meta.id,
         ),
       };
     case DELETE_ASSESSMENT_SUCCEEDED:
@@ -211,15 +211,15 @@ export const assessmentReducer = (
         ...state,
         assessments: deleteProperty<Assessment>(
           state.assessments,
-          action.payload.id,
+          action.meta.id,
         ),
         editedAssessments: deleteProperty<Assessment>(
           state.editedAssessments,
-          action.payload.id,
+          action.meta.id,
         ),
         assessmentDeletes: decrementUpdates(
           state.assessmentDeletes,
-          action.payload.id,
+          action.meta.id,
         ),
       };
     case DELETE_ASSESSMENT_FAILED:
@@ -257,7 +257,7 @@ export const assessmentReducer = (
         ...state,
         tempAssessmentSaving: {
           ...state.tempAssessmentSaving,
-          [action.payload.assessment.id]: true,
+          [action.meta.tempId]: true,
         },
       };
     case STORE_NEW_ASSESSMENT_SUCCEEDED:
@@ -265,34 +265,34 @@ export const assessmentReducer = (
         ...state,
         assessments: {
           ...state.assessments,
-          [action.payload.assessment.id]: action.payload.assessment,
+          [action.payload.id]: action.payload,
         },
         tempAssessmentSaving: deleteProperty<boolean>(
           state.tempAssessmentSaving,
-          action.payload.oldAssessment.id,
+          action.meta.tempId,
         ),
         // If temp assessment differs from saved, move it to edited (with updated id)
         // If temp assessment is equal to new saved, simply remove it from temp.
         editedAssessments: hasIdenticalItem(
           state.tempAssessments,
-          action.payload.oldAssessment,
+          action.meta.tempAssessment,
         )
           ? state.editedAssessments
           : {
               ...state.editedAssessments,
-              [action.payload.assessment.id]: {
-                ...state.tempAssessments[action.payload.oldAssessment.id],
-                id: action.payload.assessment.id,
+              [action.payload.id]: {
+                ...state.tempAssessments[action.meta.tempId],
+                id: action.payload.id,
                 // When moving temp assessment to edited, ensure assessment_type_id is non-null
                 assessment_type_id:
-                  state.tempAssessments[action.payload.oldAssessment.id]
+                  state.tempAssessments[action.meta.tempId]
                     .assessment_type_id ||
-                  action.payload.assessment.assessment_type_id,
+                  action.payload.assessment_type_id,
               },
             },
         tempAssessments: deleteProperty<TempAssessment>(
           state.tempAssessments,
-          action.payload.oldAssessment.id,
+          action.meta.tempId,
         ),
       };
     case STORE_NEW_ASSESSMENT_FAILED:
@@ -300,7 +300,7 @@ export const assessmentReducer = (
         ...state,
         tempAssessmentSaving: {
           ...state.tempAssessmentSaving,
-          [action.meta.id]: false,
+          [action.meta.tempId]: false,
         },
       };
     default:
