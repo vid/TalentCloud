@@ -8,6 +8,8 @@ class AdminPage {
       .withText("Edit")
       .nth(0);
     this.logoutButton = Selector("a").withText("Logout");
+    this.managersTab = Selector("a").withText("Managers");
+    this.managersTitle = Selector("h1").withText("Managers");
     this.roleOptionBasic = Selector("option").withText("basic");
     this.roleOptionUpgradedManager = Selector("option").withText(
       "upgradedManager",
