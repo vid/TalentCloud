@@ -14,7 +14,8 @@ test("Login as Admin #critical", async t => {
 
 fixture(`Admin Portal Interface #admin`).page(`talent.test/admin`);
 
-test("Navigate to users tab #critical #focus", async t => {
+fixture(`Admin Portal User Management #admin`).page(`talent.test/admin`);
+test("Navigate to users tab #critical", async t => {
   await t
     // Login as Admin.
     .useRole(adminUser)
@@ -25,7 +26,7 @@ test("Navigate to users tab #critical #focus", async t => {
     .ok();
 });
 
-test("Navigate to edit user #critical #focus", async t => {
+test("Navigate to edit user #critical", async t => {
   await t
     // Login as Admin.
     .useRole(adminUser)
@@ -36,7 +37,25 @@ test("Navigate to edit user #critical #focus", async t => {
     .ok();
 });
 
-fixture(`Admin Portal User Management #admin`).page(`talent.test/admin`);
+test("Edit a user #critical #focus", async t => {
+  await t
+    // Login as Admin.
+    .useRole(adminUser)
+    // Go to admin dashboard.
+    .navigateTo("/admin/user/3/edit")
+    .click(AdminPage.roleSelect)
+    .click(AdminPage.roleOptionUpgradedManager)
+    .click(AdminPage.submitButton)
+    .navigateTo("/admin/user/3/edit")
+    .expect(AdminPage.roleSelect.value)
+    .eql("2") // 2 == upgradedManager
+    .click(AdminPage.roleSelect)
+    .click(AdminPage.roleOptionBasic)
+    .click(AdminPage.submitButton)
+    .navigateTo("/admin/user/3/edit")
+    .expect(AdminPage.roleSelect.value)
+    .eql("1"); // 1 == basic
+});
 
 fixture(`Admin Portal Manager Management #admin`).page(`talent.test/admin`);
 
