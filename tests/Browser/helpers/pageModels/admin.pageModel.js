@@ -4,9 +4,6 @@ class AdminPage {
   constructor() {
     this.dashboardTitle = Selector("h1").withText("Dashboard");
     this.editUserTitle = Selector("h1").withText("Edit user");
-    this.firstUserEditButton = Selector("a")
-      .withText("Edit")
-      .nth(0);
     this.logoutButton = Selector("a").withText("Logout");
     this.managersTab = Selector("a").withText("Managers");
     this.managersTitle = Selector("h1").withText("Managers");
@@ -19,6 +16,16 @@ class AdminPage {
     this.usersTitle = Selector("h1").withText("Users");
     this.submitButton = Selector("[type=submit]");
     this.profileLinks = Selector("a").withText("Profile");
+    this.userEditButton = i =>
+      Selector("a")
+        .withText("Edit")
+        .nth(i);
+
+    this.managerProfileButton = i =>
+      Selector("a")
+        .withText("Profile")
+        .nth(i);
+    this.managerProfileTitle = Selector("h1").withText("My Profile");
   }
 }
 

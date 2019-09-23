@@ -26,13 +26,13 @@ test("Navigate to users tab #critical", async t => {
     .ok();
 });
 
-test("Navigate to edit user #critical", async t => {
+test("Navigate to edit user #critical #focus", async t => {
   await t
     // Login as Admin.
     .useRole(adminUser)
     // Go to admin dashboard.
     .navigateTo("/admin/user")
-    .click(AdminPage.firstUserEditButton)
+    .click(AdminPage.userEditButton(0))
     .expect(AdminPage.editUserTitle)
     .ok();
 });
@@ -59,7 +59,7 @@ test("Edit a users role #critical", async t => {
 
 fixture(`Admin Portal Manager Management #admin`).page(`talent.test/admin`);
 
-test("Navigate to managers tab #critical #focus", async t => {
+test("Navigate to managers tab #critical", async t => {
   await t
     // Login as Admin.
     .useRole(adminUser)
@@ -70,8 +70,15 @@ test("Navigate to managers tab #critical #focus", async t => {
     .ok();
 });
 
-test("Go to a Manager's Profile #critical", async t => {
-  await t;
+test("Go to a Manager's Profile #critical #focus", async t => {
+  await t
+    // Login as Admin.
+    .useRole(adminUser)
+    // Go to admin dashboard.
+    .navigateTo("/admin/manager")
+    .click(AdminPage.managerProfileButton(0))
+    .expect(AdminPage.managerProfileTitle)
+    .ok();
 });
 
 fixture(`Admin Portal Job Poster Management #admin`).page(`talent.test/admin`);
