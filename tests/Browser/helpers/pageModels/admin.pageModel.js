@@ -26,6 +26,7 @@ class AdminPage {
         .withText("Profile")
         .nth(i);
     this.managerProfileTitle = Selector("h1").withText("My Profile");
+    this.managerProfileFieldPositionEN = Selector("#managerProfileTitleEN");
   }
 }
 

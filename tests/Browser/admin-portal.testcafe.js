@@ -26,7 +26,7 @@ test("Navigate to users tab #critical", async t => {
     .ok();
 });
 
-test("Navigate to edit user #critical #focus", async t => {
+test("Navigate to edit user #critical", async t => {
   await t
     // Login as Admin.
     .useRole(adminUser)
@@ -70,7 +70,7 @@ test("Navigate to managers tab #critical", async t => {
     .ok();
 });
 
-test("Go to a Manager's Profile #critical #focus", async t => {
+test("Go to a Manager's Profile #critical", async t => {
   await t
     // Login as Admin.
     .useRole(adminUser)
@@ -79,6 +79,29 @@ test("Go to a Manager's Profile #critical #focus", async t => {
     .click(AdminPage.managerProfileButton(0))
     .expect(AdminPage.managerProfileTitle)
     .ok();
+});
+
+test("Edit a manager's profile #critical #focus", async t => {
+  await t
+    // Login as Admin.
+    .useRole(adminUser)
+    // Go to admin dashboard.
+    .navigateTo("/manager/profile/2/edit")
+    .selectText(AdminPage.managerProfileFieldPositionEN)
+    .pressKey("delete")
+    .typeText(AdminPage.managerProfileFieldPositionEN, "Captain Planet")
+    .click(AdminPage.submitButton)
+    .expect(AdminPage.managerProfileFieldPositionEN.value)
+    .eql("Captain Planet")
+    .selectText(AdminPage.managerProfileFieldPositionEN)
+    .pressKey("delete")
+    .typeText(
+      AdminPage.managerProfileFieldPositionEN,
+      "Executive Officer for the Week",
+    )
+    .click(AdminPage.submitButton)
+    .expect(AdminPage.managerProfileFieldPositionEN.value)
+    .eql("Executive Officer for the Week");
 });
 
 fixture(`Admin Portal Job Poster Management #admin`).page(`talent.test/admin`);
