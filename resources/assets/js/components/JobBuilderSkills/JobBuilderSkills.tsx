@@ -1,5 +1,5 @@
 /* eslint-disable camelcase, @typescript-eslint/camelcase */
-import React, { useState, useRef, useReducer } from "react";
+import React, { useState, useRef, useReducer, useEffect } from "react";
 import {
   InjectedIntlProps,
   injectIntl,
@@ -236,6 +236,9 @@ export const JobBuilderSkills: React.FunctionComponent<
   // When skillBeingAdded is not null, the modal to add a new skill will appear.
   const [skillBeingAdded, setSkillBeingAdded] = useState<Skill | null>(null);
 
+  // Set to true if submit button is touched
+  const [submitTouched, setSubmitTouched] = useState(false);
+
   // When criteriaBeingEdited is not null, the modal for editing that criterion will appear.
   const [
     criteriaBeingEdited,
@@ -309,16 +312,26 @@ export const JobBuilderSkills: React.FunctionComponent<
   );
 
   const [isSaving, setIsSaving] = useState(false);
+
+  const errorMessage = React.createRef<HTMLAnchorElement>();
+  const focusOnError = (): void | null =>
+    errorMessage.current && errorMessage.current.focus();
+
   const saveAndPreview = (): void => {
-    nprogress.start();
-    setIsSaving(true);
-    handleSubmit(jobCriteria)
-      .then((criteria: Criteria[]): void => {
-        criteriaDispatch({ type: "replace", payload: criteria });
-        nprogress.done();
-        setIsPreviewVisible(true);
-      })
-      .finally((): void => setIsSaving(false));
+    setSubmitTouched(true);
+    if (essentialCount > 0) {
+      nprogress.start();
+      setIsSaving(true);
+      handleSubmit(jobCriteria)
+        .then((criteria: Criteria[]): void => {
+          criteriaDispatch({ type: "replace", payload: criteria });
+          nprogress.done();
+          setIsPreviewVisible(true);
+        })
+        .finally((): void => setIsSaving(false));
+    } else {
+      focusOnError();
+    }
   };
   const saveAndReturn = (): void => {
     nprogress.start();
@@ -333,6 +346,10 @@ export const JobBuilderSkills: React.FunctionComponent<
         setIsSaving(false);
       });
   };
+
+  useEffect(() => {
+    if (submitTouched && essentialCount === 0) focusOnError();
+  }, [submitTouched, essentialCount]);
 
   const renderNullCriteriaRow = (): React.ReactElement => (
     <div className="jpb-skill-null" data-c-grid="gutter middle">
@@ -539,6 +556,21 @@ export const JobBuilderSkills: React.FunctionComponent<
     );
   };
 
+  const submitButton = (
+    <button
+      data-c-button="solid(c2)"
+      data-c-radius="rounded"
+      type="button"
+      disabled={isSaving}
+      onClick={(): void => saveAndPreview()}
+    >
+      <FormattedMessage
+        id="jobBuilder.skills.button.previewSkills"
+        defaultMessage="Save &amp; Preview Skills"
+        description="Label of Button"
+      />
+    </button>
+  );
   return (
     <>
       <div
@@ -1050,19 +1082,7 @@ export const JobBuilderSkills: React.FunctionComponent<
           data-c-align="base(centre) tl(right)"
         >
           {/* We'll want this button to functionally be the exact same as the button at the bottom of the page, where it saves the data, and opens the preview modal. */}
-          <button
-            data-c-button="solid(c2)"
-            data-c-radius="rounded"
-            type="button"
-            disabled={isSaving}
-            onClick={(): void => saveAndPreview()}
-          >
-            <FormattedMessage
-              id="jobBuilder.skills.button.previewSkills"
-              defaultMessage="Save &amp; Preview Skills"
-              description="Label of Button"
-            />
-          </button>
+          {submitButton}
         </div>
         {/* The 3 sections below are each functionally similar and can probably be united into one component. The biggest difference between the three is that "Cultural Skills" has a categorical breakdown between "Recommended Skills" and the rest of the category. These recommendations are based directly on the way the manager answered their work environment questions, but I'm not sure how the logic works, so you'll want to check in with Lauren/Jasmita on this. */}
         <h4
@@ -1079,6 +1099,7 @@ export const JobBuilderSkills: React.FunctionComponent<
         {/* Occupational Skills */}
         {/* You can modify colour/icon using the category classes here again (occupational, cultural, future) on the "jpb-skill-category" element. */}
         <div
+          id="jpb-occupational-skills"
           className="jpb-skill-category occupational"
           data-c-margin="bottom(normal)"
           data-c-padding="normal"
@@ -1113,13 +1134,14 @@ export const JobBuilderSkills: React.FunctionComponent<
                 />
               </h5>
               {/* Category description - basically this outlines what the category means. */}
-              <p>
+              {/* <p>
+                // TODO: Add this message back in once we have copy.
                 <FormattedMessage
                   id="jobBuilder.skills.description.occupationalSkills"
-                  defaultMessage="Lorem ipsum."
+                  defaultMessage=""
                   description="Description of a category of skills"
                 />
-              </p>
+              </p> */}
             </div>
             <div
               data-c-grid-item="tp(1of3) ds(1of4)"
@@ -1200,13 +1222,14 @@ export const JobBuilderSkills: React.FunctionComponent<
                   description="Title of skills category"
                 />
               </h5>
-              <p>
+              {/* <p>
+              // TODO: Add this message back in once we have copy.
                 <FormattedMessage
                   id="jobBuilder.skills.description.culturalSkills"
-                  defaultMessage="Lorem ipsum."
+                  defaultMessage=""
                   description="Description of a category of skills"
                 />
-              </p>
+              </p> */}
             </div>
             <div
               data-c-grid-item="tp(1of3) ds(1of4)"
@@ -1313,13 +1336,14 @@ export const JobBuilderSkills: React.FunctionComponent<
                   description="Title of skills category"
                 />
               </h5>
-              <p>
+              {/* <p>
+              // TODO: Add this message back in once we have copy.
                 <FormattedMessage
                   id="jobBuilder.skills.description.futureSkills"
-                  defaultMessage="Lorem ipsum."
+                  defaultMessage=""
                   description="Description of a category of skills"
                 />
-              </p>
+              </p> */}
             </div>
             <div
               data-c-grid-item="tp(1of3) ds(1of4)"
@@ -1483,19 +1507,31 @@ export const JobBuilderSkills: React.FunctionComponent<
             data-c-grid-item="tp(1of2)"
           >
             {/* Modal trigger, same as last step. */}
-            <button
-              data-c-button="solid(c2)"
-              data-c-radius="rounded"
-              type="button"
-              disabled={isSaving}
-              onClick={(): void => saveAndPreview()}
-            >
-              <FormattedMessage
-                id="jobBuilder.skills.button.previewSkills"
-                defaultMessage="Save &amp; Preview Skills"
-                description="Label of Button"
-              />
-            </button>
+            {submitButton}
+            {essentialCount === 0 && submitTouched && (
+              <div
+                role="alert"
+                data-c-alert="error"
+                data-c-radius="rounded"
+                data-c-margin="top(normal)"
+                data-c-padding="all(half)"
+                style={{
+                  display: `inline-block`,
+                }}
+              >
+                <a
+                  href="#jpb-occupational-skills"
+                  tabIndex={0}
+                  ref={errorMessage}
+                >
+                  <FormattedMessage
+                    id="jobBuilder.skills.essentialSkillRequiredError"
+                    defaultMessage="At least one 'Essential Skill' is required."
+                    description="Label of Button"
+                  />
+                </a>
+              </div>
+            )}
           </div>
         </div>
       </div>
