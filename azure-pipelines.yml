@@ -49,6 +49,11 @@ stages:
       inputs:
         command: 'install'
         
+    - task: Npm@1
+      inputs:
+        command: 'custom'
+        customCommand: 'run prod'
+
     - task: ArchiveFiles@2
       displayName: 'Archive files'
       inputs:
