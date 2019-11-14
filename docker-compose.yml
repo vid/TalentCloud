@@ -17,7 +17,7 @@ services:
     # Application / PHP-FPM
     talentcloud:
         build: .
-        #        image: gctcntgc/talentcloud
+        #        image: gctcntgc/talentcloud # test
         container_name: talentcloud
         working_dir: /var/www
         restart: always
