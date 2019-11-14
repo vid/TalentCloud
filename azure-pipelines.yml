@@ -27,11 +27,11 @@ stages:
     pool:
       vmImage: $(vmImageName)
     steps:
-- task: DockerCompose@0
-  inputs:
-    containerregistrytype: 'Azure Container Registry'
-    azureSubscription: 'Azure-Sub-AKS-Demo(50dccd85-a488-43bd-9b43-5f3e79de5945)'
-    azureContainerRegistry: '{"loginServer":"novembertcacr.azurecr.io", "id" : "/subscriptions/50dccd85-a488-43bd-9b43-5f3e79de5945/resourceGroups/november-tc-vm-rg/providers/Microsoft.ContainerRegistry/registries/novembertcacr"}'
-    dockerComposeFile: '**/docker-compose.yml'
-    action: 'Run a Docker Compose command'
-    dockerComposeCommand: 'build'
+    - task: DockerCompose@0
+      inputs:
+        containerregistrytype: 'Azure Container Registry'
+        azureSubscription: 'Azure-Sub-AKS-Demo(50dccd85-a488-43bd-9b43-5f3e79de5945)'
+        azureContainerRegistry: '{"loginServer":"novembertcacr.azurecr.io", "id" : "/subscriptions/50dccd85-a488-43bd-9b43-5f3e79de5945/resourceGroups/november-tc-vm-rg/providers/Microsoft.ContainerRegistry/registries/novembertcacr"}'
+        dockerComposeFile: '**/docker-compose.yml'
+        action: 'Run a Docker Compose command'
+        dockerComposeCommand: 'build'
