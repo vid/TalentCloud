@@ -16,7 +16,7 @@ services:
             - "443:443"
     # Application / PHP-FPM
     talentcloud:
-        # build: .
+        build: .
         #        image: gctcntgc/talentcloud
         container_name: talentcloud
         working_dir: /var/www
