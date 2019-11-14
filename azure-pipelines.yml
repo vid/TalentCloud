@@ -42,4 +42,8 @@ stages:
         azureContainerRegistry: '{"loginServer":"novembertcacr.azurecr.io", "id" : "/subscriptions/50dccd85-a488-43bd-9b43-5f3e79de5945/resourceGroups/november-tc-vm-rg/providers/Microsoft.ContainerRegistry/registries/novembertcacr"}'
         dockerComposeFile: '**/docker-compose.yml'
         action: 'Push services'
-        
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'drop'
+        publishLocation: 'Container'
