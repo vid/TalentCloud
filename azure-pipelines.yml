@@ -13,7 +13,6 @@ variables:
   dockerRegistryServiceConnection: 'cd1b1353-f350-4fad-ae05-f1489ee57364'
   imageRepository: 'novembertcimage'
   containerRegistry: 'novembertcacr.azurecr.io'
-  dockerfilePath: '$(Build.SourcesDirectory)/docker-compose.yml'
   tag: '$(Build.BuildId)'
   
   # Agent VM image name
