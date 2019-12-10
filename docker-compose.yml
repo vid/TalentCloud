@@ -10,14 +10,14 @@ services:
         restart: always
         depends_on:
             - talentcloud
-            - postgres
+#            - postgres
         ports:
             - "80:80"
             - "443:443"
     # Application / PHP-FPM
     talentcloud:
         build: .
-        #        image: gctcntgc/talentcloud # test
+        image: novembertcacr.azurecr.io/vidtalentcloud_talentcloud # test
         container_name: talentcloud
         working_dir: /var/www
         restart: always
@@ -31,27 +31,3 @@ services:
             - "DB_HOST=postgres"
         ports:
             - "9000:9000"
-    # Database / Postgres
-    postgres:
-        image: postgres:9.6-alpine
-        container_name: postgres
-        restart: always
-        volumes:
-            - "pgdata:/var/lib/postgresql/data"
-        environment:
-            - "POSTGRES_DB=talentcloud"
-            - "POSTGRES_USER=talentcloud"
-            - "POSTGRES_PASSWORD=talentcloud"
-        ports:
-            - "5432:5432"
-    # Adminer
-    adminer:
-        image: adminer
-        container_name: adminer
-        restart: always
-        links:
-            - postgres
-        ports:
-            - "8080:8080"
-volumes:
-    pgdata:
