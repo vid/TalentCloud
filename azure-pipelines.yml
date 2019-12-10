@@ -25,8 +25,8 @@ steps:
 - script: composer install --no-interaction --prefer-dist  --no-dev
   displayName: 'composer install'
 
-- script: ./vendor/bin/phpunit
-  displayName: 'Run tests with phpunit'
+#- script: ./vendor/bin/phpunit
+#  displayName: 'Run tests with phpunit'
 
 - task: ArchiveFiles@2
   inputs:
