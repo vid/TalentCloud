@@ -26,10 +26,8 @@ steps:
   displayName: 'composer install'
 
 # FIXME testing
-- task: CopyFiles@2
-  inputs:
-    Contents: '.env.testing'
-    TargetFolder: '$(Build.ArtifactStagingDirectory)/.env'
+- script: cp .env.testing .env
+  displayName: 'cp env'
 
 #- script: ./vendor/bin/phpunit
 #  displayName: 'Run tests with phpunit'
