@@ -25,6 +25,12 @@ steps:
 - script: composer install --no-interaction --prefer-dist  --no-dev
   displayName: 'composer install'
 
+# FIXME testing
+- task: CopyFiles@2
+  inputs:
+    Contents: '.env.testing'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
 #- script: ./vendor/bin/phpunit
 #  displayName: 'Run tests with phpunit'
 
