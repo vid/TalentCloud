@@ -29,7 +29,7 @@ steps:
 - task: CopyFiles@2
   inputs:
     Contents: '.env.testing'
-    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)/.env'
 
 #- script: ./vendor/bin/phpunit
 #  displayName: 'Run tests with phpunit'
