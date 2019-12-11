@@ -25,6 +25,15 @@ steps:
 - script: composer install --no-interaction --prefer-dist  --no-dev
   displayName: 'composer install'
 
+- task: Npm@1
+  inputs:
+    command: 'install'
+
+- task: Npm@1
+  inputs:
+    command: 'custom'
+    customCommand: 'run dev'
+
 # FIXME testing
 - script: cp .env.testing .env
   displayName: 'cp env'
