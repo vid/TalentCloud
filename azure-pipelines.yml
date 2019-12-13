@@ -30,6 +30,9 @@ steps:
     dir
   displayName: 'install composer'
 
+- script: curl https://getcomposer.org/composer.phar
+  displayName: 'curl composer'
+  
 - script: composer --version
   displayName: 'check composer version'
   
