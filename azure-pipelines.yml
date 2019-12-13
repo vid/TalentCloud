@@ -13,14 +13,14 @@ variables:
   phpVersion: 7.2
 
 steps:
-- script: |
-    sudo update-alternatives --set php /usr/bin/php$(phpVersion)
-    sudo update-alternatives --set phar /usr/bin/phar$(phpVersion)
-    sudo update-alternatives --set phpdbg /usr/bin/phpdbg$(phpVersion)
-    sudo update-alternatives --set php-cgi /usr/bin/php-cgi$(phpVersion)
-    sudo update-alternatives --set phar.phar /usr/bin/phar.phar$(phpVersion)
-    php -version
-  displayName: 'Use PHP version $(phpVersion)'
+#- script: |
+#    sudo update-alternatives --set php /usr/bin/php$(phpVersion)
+#    sudo update-alternatives --set phar /usr/bin/phar$(phpVersion)
+#    sudo update-alternatives --set phpdbg /usr/bin/phpdbg$(phpVersion)
+#    sudo update-alternatives --set php-cgi /usr/bin/php-cgi$(phpVersion)
+#    sudo update-alternatives --set phar.phar /usr/bin/phar.phar$(phpVersion)
+#    php -version
+#  displayName: 'Use PHP version $(phpVersion)'
 
 - script: composer install --no-interaction --prefer-dist  --no-dev
   displayName: 'composer install'
@@ -35,8 +35,8 @@ steps:
     customCommand: 'run dev'
 
 # FIXME testing
-- script: cp .env.testing .env
-  displayName: 'cp env'
+- script: copy .env.testing .env
+  displayName: 'copy env'
 
 #- script: ./vendor/bin/phpunit
 #  displayName: 'Run tests with phpunit'
