@@ -23,7 +23,7 @@ steps:
 #  displayName: 'Use PHP version $(phpVersion)'
 
 
-- script: curl https://getcomposer.org/composer.phar
+- script: curl https://getcomposer.org/composer.phar --output composer.phar
   displayName: 'curl composer'
 
 #- script: |
