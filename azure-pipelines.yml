@@ -13,6 +13,14 @@ variables:
   phpVersion: 7.2
 
 steps:
+- task: AzureAppServiceManage@0
+  displayName: 'Install Composer Extension'
+  inputs:
+    azureSubscription: '$(Parameters.ConnectedServiceName)'
+    Action: 'Install Extensions'
+    WebAppName: '$(Parameters.WebAppName)'
+    ExtensionsList: ComposerExtension
+
 #- script: |
 #    sudo update-alternatives --set php /usr/bin/php$(phpVersion)
 #    sudo update-alternatives --set phar /usr/bin/phar$(phpVersion)
