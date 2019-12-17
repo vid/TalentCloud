@@ -35,8 +35,17 @@ steps:
     customCommand: 'run prod'
 
 # FIXME testing
-- script: cp .env.testing .env
+- script: cp .env.azure .env
   displayName: 'cp env'
+
+- task: CmdLine@2
+  inputs:
+    script: |
+      echo DB_HOST=$(DB_HOST) >> .env
+      echo  DB_DATABASE=$(DB_DATABASE) >> .env
+      echo  DB_USERNAME=$(DB_USERNAME) >> .env
+      echo  DB_PASSWORD=$(DB_PASSWORD) >> .env
+# end FIXME
 
 #- script: ./vendor/bin/phpunit
 #  displayName: 'Run tests with phpunit'
