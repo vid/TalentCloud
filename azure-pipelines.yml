@@ -22,18 +22,6 @@ steps:
     php -version
   displayName: 'Use PHP version $(phpVersion)'
 
-- script: composer install --no-interaction --prefer-dist  --no-dev
-  displayName: 'composer install'
-
-- task: Npm@1
-  inputs:
-    command: 'install'
-
-- task: Npm@1
-  inputs:
-    command: 'custom'
-    customCommand: 'run prod'
-
 # FIXME testing
 - script: cp .env.azure .env
   displayName: 'cp env'
@@ -45,6 +33,18 @@ steps:
       echo  DB_DATABASE=$(DB_DATABASE) >> .env
       echo  DB_USERNAME=$(DB_USERNAME) >> .env
       echo  DB_PASSWORD=$(DB_PASSWORD) >> .env
+
+- script: composer install --no-interaction --prefer-dist # --no-dev
+  displayName: 'composer install'
+
+- task: Npm@1
+  inputs:
+    command: 'install'
+
+- task: Npm@1
+  inputs:
+    command: 'custom'
+    customCommand: 'run prod'
 
 #- script: php artisan migrate:fresh
 #  displayName: "php artisan migrate:fresh"
