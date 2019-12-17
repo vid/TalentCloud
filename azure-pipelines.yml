@@ -46,11 +46,11 @@ steps:
       echo  DB_USERNAME=$(DB_USERNAME) >> .env
       echo  DB_PASSWORD=$(DB_PASSWORD) >> .env
 
-- script: php artisan migrate:fresh
-  displayName: "php artisan migrate:fresh"
+#- script: php artisan migrate:fresh
+#  displayName: "php artisan migrate:fresh"
 
-- script: php artisan db:seed
-  displayName: "php artisan db:seed"
+#- script: php artisan db:seed
+#  displayName: "php artisan db:seed"
 
 # end FIXME
 
