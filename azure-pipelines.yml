@@ -54,8 +54,8 @@ steps:
 
 # end FIXME
 
-- script: ./vendor/bin/phpunit
-  displayName: 'Run tests with phpunit'
+#- script: ./vendor/bin/phpunit
+#  displayName: 'Run tests with phpunit'
 
 - task: ArchiveFiles@2
   inputs:
