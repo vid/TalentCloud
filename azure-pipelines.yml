@@ -54,8 +54,16 @@ steps:
 
 # end FIXME
 
+- script: npm run test
+  displayName: 'Run jest  tests'
+
 - script: ./vendor/bin/phpunit
   displayName: 'Run tests with phpunit'
+
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(Pipeline.Workspace)/tests/'
+    publishLocation: 'pipeline'
 
 - task: ArchiveFiles@2
   inputs:
