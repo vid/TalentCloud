@@ -54,10 +54,14 @@ steps:
 
 # end FIXME
 
+
+- script: mkdir -p report
+  displayName: create test report directory
+
 - script: npm run test
   displayName: 'Run jest tests'
 
-- script: ./vendor/bin/phpunit
+- script: ./vendor/bin/phpunit --log-junit
   displayName: 'Run tests with phpunit'
   continueOnError: true
 
