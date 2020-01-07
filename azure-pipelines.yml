@@ -61,7 +61,7 @@ steps:
 - script: npm run test
   displayName: 'Run jest tests'
 
-- script: ./vendor/bin/phpunit --log-junit
+- script: ./vendor/bin/phpunit --log-junit report/phpunit
   displayName: 'Run tests with phpunit'
   continueOnError: true
 
